@@ -45,10 +45,12 @@ function closeModal(modal) {
 }
 
 // Event listeners for opening and closing the profile edit popup
-editProfileButton.addEventListener("click", () => {
+editProfileButton.addEventListener("click", handleOpenEditModal);
+
+function handleOpenEditModal() {
   openModal(editProfilePopup);
   fillProfileForm();
-});
+}
 
 closeEditProfileButton.addEventListener("click", () => {
   closeModal(editProfilePopup);
@@ -63,4 +65,3 @@ function fillProfileForm() {
   profileName.value = profileTitle.textContent;
   profileDescription.value = profileDes.textContent;
 }
-
