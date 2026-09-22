@@ -36,6 +36,15 @@ const closeEditProfileButton = document.querySelector(
 );
 const editProfilePopup = document.querySelector("#edit-popup");
 
+const profileNameInput = document.querySelector(
+  ".popup__input_type_name",
+);
+const profileDescriptionInput = document.querySelector(
+  ".popup__input_type_description",
+);
+const profileTitle = document.querySelector(".profile__title");
+const profileDescription = document.querySelector(".profile__description");
+
 // Functions to open and close popups
 function openModal(modal) {
   modal.classList.add("popup_is-opened");
@@ -58,10 +67,17 @@ closeEditProfileButton.addEventListener("click", () => {
 
 // Function to fill the profile form with current profile information
 function fillProfileForm() {
-  const profileName = document.querySelector(".popup__input_type_name");
-  const profileDescription = document.querySelector(".popup__input_type_description");
-  const profileTitle = document.querySelector(".profile__title");
-  const profileDes = document.querySelector(".profile__description");
-  profileName.value = profileTitle.textContent;
-  profileDescription.value = profileDes.textContent;
+  profileNameInput.value = profileTitle.textContent;
+  profileDescriptionInput.value = profileDescription.textContent;
+}
+
+// Profile form submission handling
+const formElement = document.querySelector(".popup__form");
+formElement.addEventListener("submit", handleProfileFormSubmit);
+
+function handleProfileFormSubmit(event) {
+  event.preventDefault();
+  profileTitle.textContent = profileNameInput.value;
+  profileDescription.textContent = profileDescriptionInput.value;
+  closeModal(editProfilePopup);
 }
