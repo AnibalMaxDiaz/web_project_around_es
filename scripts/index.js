@@ -10,3 +10,25 @@ let initialCards = [
 initialCards.forEach((card) => {
   console.log(card.name);
 });
+
+// Variables for the profile edit popup
+const editProfileButton = document.querySelector('.profile__edit-button');
+const closeEditProfileButton = document.querySelector('#edit-popup .popup__close');
+const editProfilePopup = document.querySelector('#edit-popup');
+
+// Functions to open and close popups
+function openModal(modal) {
+  modal.classList.add('popup_opened');
+}
+function closeModal(modal) {
+  modal.classList.remove('popup_opened');
+}
+
+// Event listeners for opening and closing the profile edit popup
+editProfileButton.addEventListener('click', () => {
+  openModal(editProfilePopup);
+});
+
+closeEditProfileButton.addEventListener('click', () => {
+  closeModal(editProfilePopup);
+});
