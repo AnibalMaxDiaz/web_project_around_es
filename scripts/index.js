@@ -72,7 +72,7 @@ function fillProfileForm() {
 }
 
 // Profile form submission handling
-const formElement = document.querySelector(".popup__form");
+const formElement = document.querySelector("#edit-profile-form");
 formElement.addEventListener("submit", handleProfileFormSubmit);
 
 function handleProfileFormSubmit(event) {
