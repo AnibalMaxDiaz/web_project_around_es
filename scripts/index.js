@@ -25,10 +25,6 @@ const initialCards = [
   },
 ];
 
-initialCards.forEach((card) => {
-  console.log(card.name);
-});
-
 // Variables for the profile edit popup
 const editProfileButton = document.querySelector(".profile__edit-button");
 const closeEditProfileButton = document.querySelector(
@@ -136,8 +132,8 @@ function renderCard({ name = "Sin título", link = "./images/placeholder.jpg" },
   container.prepend(cardElement);
 }
 
-// Render initial cards
-initialCards.forEach((card) => {
+// Render initial cards in the same order as the array
+[...initialCards].reverse().forEach((card) => {
   renderCard(card, cardContainer);
 });
 
