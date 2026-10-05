@@ -127,7 +127,7 @@ function getCardElement(card) {
 }
 
 // Function to render a card and prepend it to the card container
-function renderCard({ name = "Sin título", link = "./images/placeholder.jpg" }, container) {
+function renderCard({ name, link }, container) {
   const cardElement = getCardElement({ name, link });
   container.prepend(cardElement);
 }
