@@ -48,6 +48,19 @@ const profileDescription = document.querySelector(".profile__description");
 const cardContainer = document.querySelector(".cards__list");
 const cardTemplate = document.querySelector("#card__template").content.querySelector(".card");
 
+// Variables for the add card popup
+const addCardButton = document.querySelector(".profile__add-button");
+const addCardPopup = document.querySelector("#new-card-popup");
+const closeAddCardButton = addCardPopup.querySelector(".popup__close");
+const addCardForm = addCardPopup.querySelector("#new-card-form");
+const cardNameInput = addCardForm.querySelector(".popup__input_type_card-name");
+const cardUrlInput = addCardForm.querySelector(".popup__input_type_url");
+
+// Variables for the image expanded
+const imagePopup = document.querySelector("#image-popup");
+const popupImage = document.querySelector(".popup__image");
+const popupCaption = document.querySelector(".popup__caption");
+const closeImageButton = document.querySelector("#image-popup .popup__close");
 
 // Functions to open and close popups
 function openModal(modal) {
@@ -100,18 +113,25 @@ function getCardElement(card) {
   cardImage.alt = card.name;
 
   likeButton.addEventListener("click", () => {
-    likeButton.classList.toggle("card__like-button_active");
+    likeButton.classList.toggle("card__like-button_is-active");
   });
 
   deleteButton.addEventListener("click", () => {
     cardElement.remove();
   });
 
+  cardImage.addEventListener("click", () => {
+    popupImage.src = card.link;
+    popupImage.alt = card.name;
+    popupCaption.textContent = card.name;
+    openModal(imagePopup);
+  });
+
   return cardElement;
 }
 
 // Function to render a card and prepend it to the card container
-function renderCard({ name = "Sin título", link = "../images/placeholder.jpg" }, container) {
+function renderCard({ name = "Sin título", link = "./images/placeholder.jpg" }, container) {
   const cardElement = getCardElement({ name, link });
   container.prepend(cardElement);
 }
@@ -121,6 +141,34 @@ initialCards.forEach((card) => {
   renderCard(card, cardContainer);
 });
 
+// Open the add card popup when the "Add Card" button is clicked
+addCardButton.addEventListener("click", () => {
+  openModal(addCardPopup);
+});
 
-//handleCardFormSubmit() 
-// renderCard() que tomará el nombre de la tarjeta, su enlace y el contenedor de la tarjeta como argumentos, y antepondrá el nuevo elemento creado con getCardElement() al contenedor HTML apropiado (en el que se ubicaron las tarjetas que estaban hardcoded).
+// Close the add card popup with the "X" button
+closeAddCardButton.addEventListener("click", () => {
+  closeModal(addCardPopup);
+});
+
+// Handle the submission of the new card form
+function handleCardFormSubmit(event) {
+  event.preventDefault(); // Prevent the default page reload
+  
+  // Get the values from the inputs and pass them to renderCard
+  renderCard({
+    name: cardNameInput.value.trim() || "Sin título",
+    link: cardUrlInput.value.trim() || "./images/placeholder.jpg"
+  }, cardContainer);
+
+  closeModal(addCardPopup); // Close the modal
+  addCardForm.reset();     // Clear the form fields
+}
+
+// Event listener for the card form submission
+addCardForm.addEventListener("submit", handleCardFormSubmit);
+
+// Close the enlarged image popup
+closeImageButton.addEventListener("click", () => {
+  closeModal(imagePopup);
+});
