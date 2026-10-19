@@ -32,9 +32,7 @@ const closeEditProfileButton = document.querySelector(
 );
 const editProfilePopup = document.querySelector("#edit-popup");
 
-const profileNameInput = document.querySelector(
-  ".popup__input_type_name",
-);
+const profileNameInput = document.querySelector(".popup__input_type_name");
 const profileDescriptionInput = document.querySelector(
   ".popup__input_type_description",
 );
@@ -42,7 +40,9 @@ const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 
 const cardContainer = document.querySelector(".cards__list");
-const cardTemplate = document.querySelector("#card__template").content.querySelector(".card");
+const cardTemplate = document
+  .querySelector("#card__template")
+  .content.querySelector(".card");
 
 // Variables for the add card popup
 const addCardButton = document.querySelector(".profile__add-button");
@@ -57,6 +57,10 @@ const imagePopup = document.querySelector("#image-popup");
 const popupImage = document.querySelector(".popup__image");
 const popupCaption = document.querySelector(".popup__caption");
 const closeImageButton = document.querySelector("#image-popup .popup__close");
+
+// Profile form submission handling
+const editProfileForm = document.querySelector("#edit-profile-form");
+editProfileForm.addEventListener("submit", handleProfileFormSubmit);
 
 // Functions to open and close popups
 function openModal(modal) {
@@ -83,10 +87,6 @@ function fillProfileForm() {
   profileNameInput.value = profileTitle.textContent;
   profileDescriptionInput.value = profileDescription.textContent;
 }
-
-// Profile form submission handling
-const formElement = document.querySelector("#edit-profile-form");
-formElement.addEventListener("submit", handleProfileFormSubmit);
 
 function handleProfileFormSubmit(event) {
   event.preventDefault();
@@ -150,15 +150,18 @@ closeAddCardButton.addEventListener("click", () => {
 // Handle the submission of the new card form
 function handleCardFormSubmit(event) {
   event.preventDefault(); // Prevent the default page reload
-  
+
   // Get the values from the inputs and pass them to renderCard
-  renderCard({
-    name: cardNameInput.value.trim() || "Sin título",
-    link: cardUrlInput.value.trim() || "./images/placeholder.jpg"
-  }, cardContainer);
+  renderCard(
+    {
+      name: cardNameInput.value.trim() || "Sin título",
+      link: cardUrlInput.value.trim() || "./images/placeholder.jpg",
+    },
+    cardContainer,
+  );
 
   closeModal(addCardPopup); // Close the modal
-  addCardForm.reset();     // Clear the form fields
+  addCardForm.reset(); // Clear the form fields
 }
 
 // Event listener for the card form submission
