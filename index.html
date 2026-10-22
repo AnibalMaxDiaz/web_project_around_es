@@ -72,19 +72,37 @@
             type="button"
           ></button>
           <h3 class="popup__title">Editar perfil</h3>
-          <form class="popup__form" id="edit-profile-form">
-            <input
-              class="popup__input popup__input_type_name"
-              name="name"
-              placeholder="Nombre"
-              type="text"
-            />
-            <input
-              class="popup__input popup__input_type_description"
-              name="description"
-              placeholder="Acerca de mí"
-              type="text"
-            />
+          <form class="popup__form" id="edit-profile-form" novalidate>
+            <label class="popup__field">
+              <input
+                aria-describedby="profile-name-error"
+                aria-label="Nombre"
+                class="popup__input popup__input_type_name"
+                id="profile-name"
+                maxlength="40"
+                minlength="2"
+                name="name"
+                placeholder="Nombre"
+                required
+                type="text"
+              />
+              <span class="popup__error" id="profile-name-error"></span>
+            </label>
+            <label class="popup__field">
+              <input
+                aria-describedby="profile-description-error"
+                aria-label="Acerca de mí"
+                class="popup__input popup__input_type_description"
+                id="profile-description"
+                maxlength="200"
+                minlength="2"
+                name="description"
+                placeholder="Acerca de mí"
+                required
+                type="text"
+              />
+              <span class="popup__error" id="profile-description-error"></span>
+            </label>
             <button class="button popup__button" type="submit">Guardar</button>
           </form>
         </div>
@@ -97,19 +115,35 @@
             type="button"
           ></button>
           <h3 class="popup__title">Nuevo lugar</h3>
-          <form class="popup__form" id="new-card-form">
-            <input
-              class="popup__input popup__input_type_card-name"
-              name="place-name"
-              placeholder="Título"
-              type="text"
-            />
-            <input
-              class="popup__input popup__input_type_url"
-              name="link"
-              placeholder="Enlace a la imagen"
-              type="url"
-            />
+          <form class="popup__form" id="new-card-form" novalidate>
+            <label class="popup__field">
+              <input
+                aria-describedby="place-name-error"
+                aria-label="Título"
+                class="popup__input popup__input_type_card-name"
+                id="place-name"
+                maxlength="30"
+                minlength="2"
+                name="place-name"
+                placeholder="Título"
+                required
+                type="text"
+              />
+              <span class="popup__error" id="place-name-error"></span>
+            </label>
+            <label class="popup__field">
+              <input
+                aria-describedby="image-url-error"
+                aria-label="Enlace a la imagen"
+                class="popup__input popup__input_type_url"
+                id="image-url"
+                name="link"
+                placeholder="Enlace a la imagen"
+                required
+                type="url"
+              />
+              <span class="popup__error" id="image-url-error"></span>
+            </label>
             <button class="button popup__button" type="submit">Crear</button>
           </form>
         </div>
@@ -126,6 +160,6 @@
         </div>
       </div>
     </div>
-    <script src="./scripts/index.js"></script>
+    <script src="./scripts/index.js" type="module"></script>
   </body>
 </html>

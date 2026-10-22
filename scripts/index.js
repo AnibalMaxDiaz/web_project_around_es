@@ -1,3 +1,5 @@
+import { resetValidation, setEventListeners } from "./validate.js";
+
 const initialCards = [
   {
     name: "Valle de Yosemite",
@@ -25,12 +27,10 @@ const initialCards = [
   },
 ];
 
-// Variables for the profile edit popup
+// Selectors para edición del perfil.
 const editProfileButton = document.querySelector(".profile__edit-button");
-const closeEditProfileButton = document.querySelector(
-  "#edit-popup .popup__close",
-);
 const editProfilePopup = document.querySelector("#edit-popup");
+const editProfileForm = document.querySelector("#edit-profile-form");
 
 const profileNameInput = document.querySelector(".popup__input_type_name");
 const profileDescriptionInput = document.querySelector(
@@ -44,7 +44,7 @@ const cardTemplate = document
   .querySelector("#card__template")
   .content.querySelector(".card");
 
-// Variables for the add card popup
+// Selectores para crear tarjetas.
 const addCardButton = document.querySelector(".profile__add-button");
 const addCardPopup = document.querySelector("#new-card-popup");
 const closeAddCardButton = addCardPopup.querySelector(".popup__close");
@@ -52,42 +52,52 @@ const addCardForm = addCardPopup.querySelector("#new-card-form");
 const cardNameInput = addCardForm.querySelector(".popup__input_type_card-name");
 const cardUrlInput = addCardForm.querySelector(".popup__input_type_url");
 
-// Variables for the image expanded
+// Selectores para la imagen ampliada y las demás ventanas emergentes.
 const imagePopup = document.querySelector("#image-popup");
 const popupImage = document.querySelector(".popup__image");
 const popupCaption = document.querySelector(".popup__caption");
 const closeImageButton = document.querySelector("#image-popup .popup__close");
 
-// Profile form submission handling
-const editProfileForm = document.querySelector("#edit-profile-form");
-editProfileForm.addEventListener("submit", handleProfileFormSubmit);
-
-// Functions to open and close popups
+// Muestra una ventana y activa el cierre con Escape.
 function openModal(modal) {
   modal.classList.add("popup_is-opened");
+  document.addEventListener("keydown", handleEscapeKey);
 }
+
+// Oculta la ventana y limpia el estado de su formulario.
 function closeModal(modal) {
   modal.classList.remove("popup_is-opened");
+  document.removeEventListener("keydown", handleEscapeKey);
+
+  const form = modal.querySelector(".popup__form");
+  if (form) {
+    resetValidation(form);
+  }
 }
 
-// Event listeners for opening and closing the profile edit popup
-editProfileButton.addEventListener("click", handleOpenEditModal);
+// Escape cierra la ventana que esté abierta.
+function handleEscapeKey(event) {
+  if (event.key === "Escape") {
+    const openedModal = document.querySelector(".popup_is-opened");
+    if (openedModal) {
+      closeModal(openedModal);
+    }
+  }
+}
 
+// Rellena el formulario con los datos visibles del perfil.
 function handleOpenEditModal() {
-  openModal(editProfilePopup);
   fillProfileForm();
+  resetValidation(editProfileForm);
+  openModal(editProfilePopup);
 }
 
-closeEditProfileButton.addEventListener("click", () => {
-  closeModal(editProfilePopup);
-});
-
-// Function to fill the profile form with current profile information
 function fillProfileForm() {
   profileNameInput.value = profileTitle.textContent;
   profileDescriptionInput.value = profileDescription.textContent;
 }
 
+// Guarda los cambios válidos del perfil.
 function handleProfileFormSubmit(event) {
   event.preventDefault();
   profileTitle.textContent = profileNameInput.value;
@@ -95,8 +105,7 @@ function handleProfileFormSubmit(event) {
   closeModal(editProfilePopup);
 }
 
-// last part of the project: adding cards to the page by js
-
+// Construye una tarjeta y conecta sus acciones.
 function getCardElement(card) {
   const cardElement = cardTemplate.cloneNode(true);
   const cardTitle = cardElement.querySelector(".card__title");
@@ -126,48 +135,62 @@ function getCardElement(card) {
   return cardElement;
 }
 
-// Function to render a card and prepend it to the card container
+// Inserta al inicio del contenedor una tarjeta ya construida.
 function renderCard({ name, link }, container) {
   const cardElement = getCardElement({ name, link });
   container.prepend(cardElement);
 }
 
-// Render initial cards in the same order as the array
+// Renderiza las seis tarjetas iniciales en su orden original.
 [...initialCards].reverse().forEach((card) => {
   renderCard(card, cardContainer);
 });
 
-// Open the add card popup when the "Add Card" button is clicked
-addCardButton.addEventListener("click", () => {
-  openModal(addCardPopup);
-});
-
-// Close the add card popup with the "X" button
-closeAddCardButton.addEventListener("click", () => {
-  closeModal(addCardPopup);
-});
-
-// Handle the submission of the new card form
+// Añade una tarjeta, cierra la ventana y limpia el formulario.
 function handleCardFormSubmit(event) {
-  event.preventDefault(); // Prevent the default page reload
+  event.preventDefault();
 
-  // Get the values from the inputs and pass them to renderCard
   renderCard(
     {
-      name: cardNameInput.value.trim() || "Sin título",
-      link: cardUrlInput.value.trim() || "./images/placeholder.jpg",
+      name: cardNameInput.value,
+      link: cardUrlInput.value.trim(),
     },
     cardContainer,
   );
 
-  closeModal(addCardPopup); // Close the modal
-  addCardForm.reset(); // Clear the form fields
+  closeModal(addCardPopup);
+  addCardForm.reset();
+  resetValidation(addCardForm);
 }
 
-// Event listener for the card form submission
-addCardForm.addEventListener("submit", handleCardFormSubmit);
+// Cierra una ventana emergente al pulsar fuera de su contenido.
+function handleOverlayClick(event) {
+  if (event.target === event.currentTarget) {
+    closeModal(event.currentTarget);
+  }
+}
 
-// Close the enlarged image popup
-closeImageButton.addEventListener("click", () => {
-  closeModal(imagePopup);
-});
+// Registra las interacciones principales de formularios y ventanas.
+function setPageEventListeners() {
+  setEventListeners(editProfileForm);
+  setEventListeners(addCardForm);
+
+  editProfileButton.addEventListener("click", handleOpenEditModal);
+  editProfileForm.addEventListener("submit", handleProfileFormSubmit);
+  addCardButton.addEventListener("click", () => openModal(addCardPopup));
+  addCardForm.addEventListener("submit", handleCardFormSubmit);
+
+  editProfilePopup
+    .querySelector(".popup__close")
+    .addEventListener("click", () => closeModal(editProfilePopup));
+  closeAddCardButton.addEventListener("click", () =>
+    closeModal(addCardPopup),
+  );
+  closeImageButton.addEventListener("click", () => closeModal(imagePopup));
+
+  document.querySelectorAll(".popup").forEach((popup) => {
+    popup.addEventListener("click", handleOverlayClick);
+  });
+}
+
+setPageEventListeners();

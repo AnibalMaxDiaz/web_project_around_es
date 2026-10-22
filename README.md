@@ -27,12 +27,15 @@ Este proyecto consiste en la creación de una interfaz web estática con enfoque
 - Cada tarjeta permite activar o desactivar el botón «Me gusta» y eliminarse de la página.
 - Al seleccionar la imagen de una tarjeta, se abre una ventana emergente con la imagen ampliada y el título del lugar.
 - El formulario «Editar perfil» se abre con los datos actuales y permite actualizar el nombre y la descripción.
+- Los formularios validan campos obligatorios, límites de caracteres y URL antes de habilitar el envío.
 - Los formularios evitan la recarga de la página al enviarse; después de agregar una tarjeta, el formulario se reinicia.
-- Las ventanas emergentes de edición, creación de tarjetas e imagen ampliada se pueden cerrar desde sus botones de cierre.
+- Las ventanas emergentes de edición, creación de tarjetas e imagen ampliada se cierran desde sus botones, al hacer clic en la superposición o al pulsar Escape.
 
 ## Métodos y funciones de JavaScript
 
 - `openModal(modal)` y `closeModal(modal)`: muestran u ocultan una ventana emergente mediante la clase `popup_is-opened`.
+- `setEventListeners(form)`, `resetValidation(form)`, `toggleInputError(input)` y `toggleSubmitButton(form)` en `scripts/validate.js`: validan campos, muestran sus mensajes y controlan el botón de envío.
+- `handleEscapeKey(event)` y `handleOverlayClick(event)`: cierran solo la ventana emergente abierta cuando se pulsa Escape o se selecciona la superposición.
 - `fillProfileForm()`: coloca en el formulario los valores actuales del perfil.
 - `handleOpenEditModal()` y `handleProfileFormSubmit(event)`: abren el editor de perfil y actualizan el nombre y la descripción cuando se envía el formulario.
 - `getCardElement(card)`: clona la plantilla de tarjeta, asigna el título, la imagen y el texto alternativo, y configura los eventos de «Me gusta», eliminar y ampliar imagen.
@@ -52,6 +55,7 @@ Este proyecto consiste en la creación de una interfaz web estática con enfoque
 - `pages/index.css`: hoja de estilos que importa los estilos base y los bloques del proyecto.
 - `blocks/`: archivos CSS organizados por componentes y secciones.
 - `scripts/index.js`: lógica interactiva de la aplicación.
+- `scripts/validate.js`: validación reutilizable de los formularios.
 - `images/`: recursos gráficos y de ilustración.
 - `vendor/`: fuentes y estilos base.
 
